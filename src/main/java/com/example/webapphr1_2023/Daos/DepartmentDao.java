@@ -38,10 +38,11 @@ public class DepartmentDao extends DaoBase {
 
         ArrayList<Department> list = new ArrayList<>();
 
-        String sql = "select d.*, concat(e.first_name,\" \", e.last_name), l.street_address,l.city,l.state_province\n" +
+        String sql = "select d.*, concat(e.first_name,\" \", e.last_name), l.street_address,l.city,l.state_province, c.country_name\n" +
                 "from departments d\n" +
                 "left join employees e on (d.manager_id = e.employee_id)\n" +
-                "left join locations l on (d.location_id = l.location_id)";
+                "left join locations l on (d.location_id = l.location_id)\n" +
+                "left join countries c on (l.country_id = c.country_id)";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -58,6 +59,7 @@ public class DepartmentDao extends DaoBase {
                 department.setStreetAddress(rs.getString(6));
                 department.setCity(rs.getString(7));
                 department.setProvince(rs.getString(8));
+                department.setCountry(rs.getString(9));
 
                 list.add(department);
             }
@@ -75,11 +77,12 @@ public class DepartmentDao extends DaoBase {
 
         Department department = null;
 
-        String sql = "select d.*, concat(e.first_name,\" \", e.last_name), l.street_address,l.city,l.state_province\n" +
+        String sql = "select d.*, concat(e.first_name,\" \", e.last_name), l.street_address,l.city,l.state_province, c.country_name\n" +
                 "from departments d\n" +
                 "left join employees e on (d.manager_id = e.employee_id)\n" +
                 "left join locations l on (d.location_id = l.location_id)\n" +
-                "where d.department_id = ? ";
+                "left join countries c on (l.country_id = c.country_id)\n" +
+                "where d.department_id = ?";
 
         try(Connection conn = getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql) ) {
@@ -98,6 +101,7 @@ public class DepartmentDao extends DaoBase {
                     department.setStreetAddress(rs.getString(6));
                     department.setCity(rs.getString(7));
                     department.setProvince(rs.getString(8));
+                    department.setCountry(rs.getString(9));
                 }
             }
         } catch (SQLException e) {
@@ -112,7 +116,9 @@ public class DepartmentDao extends DaoBase {
 
         ArrayList<Department> locationsList = new ArrayList<>();
 
-        String sql = "select location_id, street_address,city,state_province FROM hr.locations;";
+        String sql = "select l.location_id,l.street_address,l.city,l.state_province, c.country_name\n" +
+                     "FROM locations l\n" +
+                     "inner join countries c on (l.country_id = c.country_id)";
 
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement();
@@ -125,6 +131,7 @@ public class DepartmentDao extends DaoBase {
                 location.setStreetAddress(rs.getString(2));
                 location.setCity(rs.getString(3));
                 location.setProvince(rs.getString(4));
+                location.setCountry(rs.getString(5));
 
                 locationsList.add(location);
             }

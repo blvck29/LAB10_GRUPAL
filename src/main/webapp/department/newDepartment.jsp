@@ -76,25 +76,25 @@
             <label for="maxSalary">Department Location</label>
             <select class="form-select" name="locationId" aria-label="Default select example" required>
                 <option selected disabled value="">Seleccionar ubicación</option>
-                <%
-                    for (Department loc : locationsList) {
+                <%for (Department loc : locationsList) {
+                    String street = loc.getStreetAddress();
+                    String city = ", " + loc.getCity();
+                    String province =  ", "+ loc.getProvince();
+                    String country = ", " + loc.getCountry();
 
-                        String street = loc.getStreetAddress();
-                        String city = ", " + loc.getCity();
-                        String province =  ", "+ loc.getProvince();
-
-                        if(street.equals(", "+ null)){
-                            street ="";
-                        }
-                        if(city.equals(", "+ null)){
-                            city ="";
-                        }
-                        if(province.equals(", "+ null)){
-                            province ="";
-                        }
-
-                %>
-                <option value="<%=loc.getLocationId()%>"><%=street+city+province%></option>
+                    if(street.equals(", "+ null)){
+                        street ="";
+                    }
+                    if(city.equals(", "+ null)){
+                        city ="";
+                    }
+                    if(province.equals(", "+ null)){
+                        province ="";
+                    }
+                    if(country.equals(", "+ null)){
+                        country ="";
+                    }%>
+                <option value="<%=loc.getLocationId()%>"><%=street+city+province+country%></option>
 
                 <%}%>
 

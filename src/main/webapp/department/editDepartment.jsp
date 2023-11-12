@@ -56,12 +56,12 @@
             <label for="maxSalary">Department Location</label>
             <select class="form-select" name=locationId aria-label="Default select example">
 
-                <%
-                    for (Department loc : locationsList) {
+                <%for (Department loc : locationsList) {
 
                         String street = loc.getStreetAddress();
                         String city = ", " + loc.getCity();
                         String province =  ", "+ loc.getProvince();
+                        String country = ", " + loc.getCountry();
 
                         if(street.equals(", "+ null)){
                             street ="";
@@ -72,9 +72,11 @@
                         if(province.equals(", "+ null)){
                             province ="";
                         }
+                        if(country.equals(", "+ null)){
+                            country ="";
+                        }%>
 
-                %>
-                <option value="<%=loc.getLocationId()%>"  <%=loc.getLocationId()==dep.getLocationId() ? "selected": ""%>><%=street+city+province%></option>
+                <option value="<%=loc.getLocationId()%>"  <%=loc.getLocationId()==dep.getLocationId() ? "selected": ""%>><%=street+city+province+country%></option>
 
                 <%}%>
 

@@ -31,13 +31,11 @@
             <th></th>
             <th></th>
         </tr>
-        <%
-            for (Department dep : departmentList) {
-
+        <%for (Department dep : departmentList) {
                 String street = dep.getStreetAddress();
                 String city = ", " + dep.getCity();
                 String province =  ", "+ dep.getProvince();
-
+                String country = ", " + dep.getCountry();
                 if(street.equals(", "+ null)){
                     street ="";
                 }
@@ -47,9 +45,9 @@
                 if(province.equals(", "+ null)){
                     province ="";
                 }
-
-        %>
-
+                if(country.equals(", "+ null)){
+                    country ="";
+                }%>
 
 
         <tr>
@@ -67,7 +65,7 @@
 
             <% }%>
 
-            <td><%=street+city+province %></td>
+            <td><%=street+city+province+country%></td>
 
             <td>
                 <a class="btn btn-primary"

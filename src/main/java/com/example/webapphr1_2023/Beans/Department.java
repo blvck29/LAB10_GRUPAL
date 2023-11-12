@@ -10,7 +10,15 @@ public class Department {
     private String streetAddress;
     private String city;
     private String province;
+    private String country;
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
     public String getStreetAddress() {
         return streetAddress;
