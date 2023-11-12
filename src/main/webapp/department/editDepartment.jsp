@@ -11,7 +11,7 @@
 <html>
 <head>
     <jsp:include page="../includes/bootstrap_header.jsp" />
-    <title>Editar un Departamento</title>
+    <title>Editar un departamento</title>
 </head>
 <body>
 <div class='container'>
@@ -38,10 +38,11 @@
             <select class="form-select" name=managerId aria-label="Default select example">
 
                 <option value="UNSET" >--- No Asignar ---</option>
+                <option value="<%=dep.getManagerId()%>" selected><%=dep.getManagerName()%></option>
 
                 <%for (Employee e : employeesList){ %>
 
-                <option value="<%=e.getEmployeeId()%>"  <%=e.getEmployeeId()==dep.getManagerId() ? "selected": ""%>><%=e.getFirstName() + " " + e.getLastName()%></option>
+                <option value="<%=e.getEmployeeId()%>"><%=e.getFirstName() + " " + e.getLastName()%></option>
 
                 <%}%>
 

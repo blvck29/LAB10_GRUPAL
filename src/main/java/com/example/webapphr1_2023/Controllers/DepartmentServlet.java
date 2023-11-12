@@ -39,19 +39,20 @@ public class DepartmentServlet extends HttpServlet {
             case "edit":
                 String idDepartment = req.getParameter("idDep");
                 Department dep = departmentDao.buscarPorId(idDepartment);
+                ArrayList<Employee> noManagerList = departmentDao.listNoManagerDepartments();
 
                 req.setAttribute("locationsList", locationsList);
-                req.setAttribute("employeesList", employeesList);
+                req.setAttribute("employeesList", noManagerList);
                 req.setAttribute("department", dep);
                 req.getRequestDispatcher("department/editDepartment.jsp").forward(req,resp);
                 break;
 
             case "new":
                 ArrayList<Department> idsDepartments = departmentDao.lista();
-                ArrayList<Employee> noManagerList = departmentDao.listNoManagerDepartments();
+                ArrayList<Employee> noManagerList2 = departmentDao.listNoManagerDepartments();
                 req.setAttribute("idsDepartments",idsDepartments);
                 req.setAttribute("locationsList", locationsList);
-                req.setAttribute("employeesList", noManagerList);
+                req.setAttribute("employeesList", noManagerList2);
                 req.getRequestDispatcher("department/newDepartment.jsp").forward(req,resp);
                 break;
 

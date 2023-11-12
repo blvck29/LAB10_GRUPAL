@@ -28,11 +28,11 @@
 <head>
     <jsp:include page="../includes/bootstrap_header.jsp" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <title>Editar un Departamento</title>
+    <title>Crear un departamento</title>
 </head>
 <body>
 <div class='container'>
-    <h1 class='mb-3'>Editar un departamento</h1>
+    <h1 class='mb-3'>Crear un departamento</h1>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<%= request.getContextPath()%>">Home</a></li>
