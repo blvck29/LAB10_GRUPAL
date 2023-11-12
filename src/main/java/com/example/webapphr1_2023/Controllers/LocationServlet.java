@@ -14,12 +14,14 @@ import java.awt.datatransfer.DataFlavor;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 @WebServlet(name = "LocationServlet", urlPatterns = {"/LocationServlet"})
 public class LocationServlet extends HttpServlet {
 
     LocationDao locationDao = new LocationDao();
+    ArrayList<Country> listaCountries = locationDao.listaCountries();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,34 +31,60 @@ public class LocationServlet extends HttpServlet {
         switch (action){
             case "list":
                 ArrayList<Location> locationList = locationDao.lista();
-
-                String notify = req.getParameter("notify") == null? "null" : req.getParameter("notify");
-                String notification = "Hubo un error al crear el nuevo Location, inténtelo de nuevo.";
-
                 req.setAttribute("locationList", locationList);
 
-                switch (notify){
-                    case "null":
-                        notification = "null";
-                        req.setAttribute("notification", notification);
-                        break;
-                    case "error":
-                        req.setAttribute("notification", notification);
-                        break;
-                    case "success":
-                        notification = "La creación del nuevo Location fue un éxito.";
-                        req.setAttribute("notification", notification);
-                        break;
-                }
+                if (req.getParameter("notify") != null){
 
+                    String notify = req.getParameter("notify");
+                    String notification = "Hubo un error, inténtelo de nuevo.";
+
+                    switch (notify){
+                        case "error":
+                            req.setAttribute("notification", notification);
+                            break;
+                        case "success":
+                            notification = "La acción realizada fue un éxito.";
+                            req.setAttribute("notification", notification);
+                            break;
+                    }
+                }
 
                 req.getRequestDispatcher("location/list.jsp").forward(req,resp);
                 break;
 
             case "formCrear":
-                ArrayList<Country> listaCountries = locationDao.listaCountries();
                 req.setAttribute("listaCountries",listaCountries);
                 req.getRequestDispatcher("location/form_crear.jsp").forward(req,resp);
+                break;
+
+            case "formEditar":
+                String locationId = req.getParameter("id");
+                Location location = locationDao.obtenerLocation(locationId);
+
+                req.setAttribute("location",location);
+                req.setAttribute("listaCountries",listaCountries);
+                req.getRequestDispatcher("location/form_editar.jsp").forward(req,resp);
+                break;
+
+            case "borrar":
+                if (req.getParameter("id") != null) {
+                    String locationIdStr = req.getParameter("id");
+                    int idLocation = 0;
+                    try {
+                        idLocation = Integer.parseInt(locationIdStr);
+                    } catch (NumberFormatException ex) {
+                        resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=error");
+                    }
+
+                    Location loc = locationDao.obtenerLocation(String.valueOf(idLocation));
+
+                    if (loc != null) {
+                        locationDao.borrar(String.valueOf(idLocation));
+                        resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=success");
+                    } else {
+                        resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=error");
+                    }
+                }
                 break;
 
         }
@@ -78,13 +106,36 @@ public class LocationServlet extends HttpServlet {
                 String stateProvince = req.getParameter("stateProvince");
                 String countryId = req.getParameter("country");
 
-                if (countryId.equals("no-country")){
-                    countryId = null;
+                locationDao.crear(locationId, streetAddress, postalCode, city, stateProvince, countryId);
+                if (locationDao.obtenerLocation(locationId) != null){
+                    resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=success");
+                } else {
+                    resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=error");
+                }
+                break;
+
+            case "edit":
+                String oldLocationId = req.getParameter("id");
+                String newLocationId = req.getParameter("locationId");
+                String newStreetAddress = req.getParameter("streetAddress");
+                String newPostalCode = req.getParameter("postalCode");
+                String newCity = req.getParameter("city");
+                String newStateProvince = req.getParameter("stateProvince");
+                String newCountryId = req.getParameter("country");
+
+                if (Objects.equals(newStateProvince, "")){
+                    newStateProvince = null;
                 }
 
-                locationDao.crear(locationId, streetAddress, postalCode, city, stateProvince, countryId);
-                resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=success");
+                locationDao.edit(oldLocationId, newLocationId, newStreetAddress, newPostalCode, newCity, newStateProvince, newCountryId);
+
+                if (locationDao.obtenerLocation(newLocationId) != null){
+                    resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=success");
+                } else {
+                    resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=error");
+                }
                 break;
+
         }
 
     }

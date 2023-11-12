@@ -2,7 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:useBean type="java.util.ArrayList<com.example.webapphr1_2023.Beans.Location>" scope="request" id="locationList"/>
-<jsp:useBean type="java.lang.String" scope="request" id="notification"/>
 
 
 <!DOCTYPE html>
@@ -22,17 +21,24 @@
         </ol>
     </nav>
 
-    <%if (request.getParameter("notify") != null){ %>
+    <% if (request.getParameter("notify") != null) { %>
+    <% String notification = (String) request.getAttribute("notification"); %>
+    <% String notifyType = request.getParameter("notify"); %>
 
-    <% if (request.getParameter("notify").equals("success")) {%>
-    <div class="alert alert-success" role="alert"><%=notification%>
+    <div id="notification" class="alert <%=(notifyType.equals("success")) ? "alert-success" : "alert-danger"%>" role="alert">
+        <%=notification%>
     </div>
-    <%}%>
-    <% if (request.getParameter("notify").equals("error")) {%>
-    <div class="alert alert-danger" role="alert"><%=notification%>
-    </div>
-    <%}%>
-    <%}%>
+
+    <script>
+        // Ocultar la notificación después de 10 segundos.
+        setTimeout(function () {
+            var notificationDiv = document.getElementById("notification");
+            if (notificationDiv) {
+                notificationDiv.style.display = 'none';
+            }
+        }, 10000);
+    </script>
+    <% } %>
 
     <a class="btn btn-primary mb-3" href="<%=request.getContextPath()%>/LocationServlet?action=formCrear">Crear
         Location</a>
@@ -70,13 +76,13 @@
             </td>
             <td>
                 <a class="btn btn-primary"
-                   href="<%=request.getContextPath()%>/DepartmentServlet?action=editar&id=<%=loc.getLocationId()%>">
+                   href="<%=request.getContextPath()%>/LocationServlet?action=formEditar&id=<%=loc.getLocationId()%>">
                     <i class="bi bi-pencil-square"></i>
                 </a>
             </td>
             <td>
-                <a class="btn btn-danger"
-                   href="<%=request.getContextPath()%>/DepartmentServlet?action=borrar&id=<%=loc.getLocationId()%>">
+                <a onclick="return confirm('¿Estas seguro de borrar?');" class="btn btn-danger"
+                   href="<%=request.getContextPath()%>/LocationServlet?action=borrar&id=<%=loc.getLocationId()%>">
                     <i class="bi bi-trash3"></i>
                 </a>
             </td>

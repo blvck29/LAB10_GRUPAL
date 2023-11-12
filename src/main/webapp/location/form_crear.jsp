@@ -22,19 +22,19 @@
     <form method="POST" action="<%=request.getContextPath()%>/LocationServlet?action=crear" class="col-md-6 col-lg-6">
         <div class="mb-3">
             <label for="locationId">Location ID</label>
-            <input type="text" class="form-control" id="locationId" name="locationId">
+            <input required type="text" class="form-control" id="locationId" name="locationId">
         </div>
         <div class="mb-3">
             <label for="streetAddress">Street Addres</label>
-            <input type="text" class="form-control" id="streetAddress" name="streetAddress">
+            <input required type="text" class="form-control" id="streetAddress" name="streetAddress">
         </div>
         <div class="mb-3">
             <label for="postalCode">Postal Code</label>
-            <input type="text" class="form-control" id="postalCode" name="postalCode">
+            <input required type="text" class="form-control" id="postalCode" name="postalCode">
         </div>
         <div class="mb-3">
             <label for="city">City</label>
-            <input type="text" class="form-control" id="city" name="city">
+            <input required type="text" class="form-control" id="city" name="city">
         </div>
         <div class="mb-3">
             <label for="stateProvince">State Province</label>
@@ -42,8 +42,8 @@
         </div>
         <div class="mb-3 form-group">
             <label for="country">Country</label>
-            <select name="country" id="country" class="form-control">
-                <option value="no-country">--No Country--</option>
+            <select required name="country" id="country" class="form-control">
+                <option value="no-country">Seleccionar un Country</option>
                 <% for (Country con : listaCountries) {%>
                 <option value="<%=con.getCountryId()%>"><%=con.getCountryName()%>
                 </option>
