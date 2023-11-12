@@ -103,6 +103,39 @@ public class LocationDao extends DaoBase {
         return loc;
     }
 
+    public boolean verifyId(String idOld, String idNew) {
+
+        String exists = null;
+        boolean validation = false;
+
+        String sql = "SELECT location_id FROM `hr`.`locations` WHERE `location_id` = ?;";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, idNew);
+            try(ResultSet rs = pstmt.executeQuery()) {
+
+                while (rs.next()) {
+                    exists = rs.getString(1);
+                }
+            }
+
+            if(exists!=null){
+                if (exists.equals(idOld)){
+                    validation = true;
+                }
+            } else {
+                validation = true;
+            }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return validation;
+    }
+
 
     public void crear(String locationId, String streetAddress, String postalCode, String city, String stateProvince, String countryId){
 

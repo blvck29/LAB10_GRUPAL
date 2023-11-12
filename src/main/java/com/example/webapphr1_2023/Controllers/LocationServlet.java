@@ -127,7 +127,11 @@ public class LocationServlet extends HttpServlet {
                     newStateProvince = null;
                 }
 
-                locationDao.edit(oldLocationId, newLocationId, newStreetAddress, newPostalCode, newCity, newStateProvince, newCountryId);
+                if (locationDao.verifyId(oldLocationId, newLocationId)){
+                    locationDao.edit(oldLocationId, newLocationId, newStreetAddress, newPostalCode, newCity, newStateProvince, newCountryId);
+                } else {
+                    resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=error");
+                }
 
                 if (locationDao.obtenerLocation(newLocationId) != null){
                     resp.sendRedirect(req.getContextPath() + "/LocationServlet?action=list&notify=success");
