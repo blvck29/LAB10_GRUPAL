@@ -3,6 +3,7 @@ package com.example.webapphr1_2023.Beans;
 public class Location {
     private int locationId;
     private String streetAddress;
+    private String postalCode;
     private String city;
     private String stateProvince;
     private Country country;
@@ -21,6 +22,14 @@ public class Location {
 
     public void setStreetAddress(String streetAddress) {
         this.streetAddress = streetAddress;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 
     public String getCity() {

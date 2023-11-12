@@ -1,5 +1,6 @@
 package com.example.webapphr1_2023.Daos;
 
+import com.example.webapphr1_2023.Beans.Country;
 import com.example.webapphr1_2023.Beans.Location;
 
 import java.sql.*;
@@ -17,8 +18,19 @@ public class LocationDao extends DaoBase {
             while (rs.next()) {
                 Location location = new Location();
 
-                location.(rs.getInt(1));
-                department.setDepartmentName(rs.getString(2));
+                location.setLocationId(rs.getInt(1));
+                location.setStreetAddress(rs.getString(2));
+                location.setPostalCode(rs.getString(3));
+                location.setCity(rs.getString(4));
+                location.setStateProvince(rs.getString(5));
+
+                Country country = new Country();
+
+                country.setCountryId(rs.getString(6));
+                country.setCountryName(rs.getString("country_name"));
+                country.setRegionId(rs.getString("region_id"));
+
+                location.setCountry(country);
 
                 list.add(location);
             }
