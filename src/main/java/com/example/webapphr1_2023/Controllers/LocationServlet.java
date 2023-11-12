@@ -15,6 +15,10 @@ public class LocationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher view;
+
+
+
+
         req.setAttribute("locationList", new ArrayList<>());
         view = req.getRequestDispatcher("location/list.jsp");
         view.forward(req, resp);
