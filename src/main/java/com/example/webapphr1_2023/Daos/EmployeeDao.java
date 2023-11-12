@@ -182,4 +182,33 @@ public class EmployeeDao extends DaoBase{
         }
     }
 
+    public ArrayList<Employee> listarEmpleadosOrdenadosPorNombre() {
+
+        ArrayList<Employee> listaEmpleados = new ArrayList<>();
+
+        String sql = "select employee_id, first_name, last_name from employees order by first_name ";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Employee e = new Employee();
+                e.setEmployeeId(rs.getInt(1));
+                e.setFirstName(rs.getString(2));
+                e.setLastName(rs.getString(3));
+                listaEmpleados.add(e);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return listaEmpleados;
+    }
+
+
+
+
+
+
 }

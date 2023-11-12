@@ -3,6 +3,7 @@
 
 <jsp:useBean type="java.util.ArrayList<com.example.webapphr1_2023.Beans.Department>" scope="request" id="departmentList"/>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@
             <li class="breadcrumb-item active">Departments</li>
         </ol>
     </nav>
-    <a class="btn btn-primary mb-3" href="<%=request.getContextPath()%>/JobServlet?action=formCrear">Crear
+    <a class="btn btn-primary mb-3" href="<%=request.getContextPath()%>/DepartmentServlet?action=new">Crear
         Department</a>
     <table class="table">
         <tr>
@@ -32,25 +33,50 @@
         </tr>
         <%
             for (Department dep : departmentList) {
+
+                String street = dep.getStreetAddress();
+                String city = ", " + dep.getCity();
+                String province =  ", "+ dep.getProvince();
+
+                if(street.equals(", "+ null)){
+                    street ="";
+                }
+                if(city.equals(", "+ null)){
+                    city ="";
+                }
+                if(province.equals(", "+ null)){
+                    province ="";
+                }
+
         %>
+
+
+
         <tr>
-            <td><%=dep.getDepartmentId()%>
-            </td>
-            <td><%=dep.getDepartmentName()%>
-            </td>
-            <td><%=dep.getManagerId()%>
-            </td>
-            <td><%=dep.getLocationId()%>
-            </td>
+            <td><%=dep.getDepartmentId()%></td>
+
+            <td><%=dep.getDepartmentName()%></td>
+
+            <% if(dep.getManagerName() != null){%>
+
+                <td><%=dep.getManagerName()%></td>
+
+            <% } else{%>
+
+                <td>------</td>
+
+            <% }%>
+
+            <td><%=street+city+province %></td>
+
             <td>
                 <a class="btn btn-primary"
-                   href="<%=request.getContextPath()%>/DepartmentServlet?action=editar&id=<%=dep.getDepartmentId()%>">
+                   href="<%=request.getContextPath()%>/DepartmentServlet?action=edit&idDep=<%=dep.getDepartmentId()%>">
                     <i class="bi bi-pencil-square"></i>
                 </a>
             </td>
             <td>
-                <a class="btn btn-danger"
-                   href="<%=request.getContextPath()%>/DepartmentServlet?action=borrar&id=<%=dep.getDepartmentId()%>">
+                <a class="btn btn-danger" onclick="alert('¿Estás seguro de querer eliminar este departamento?')" href="<%=request.getContextPath()%>/DepartmentServlet?action=delete&idDep=<%=dep.getDepartmentId()%>">
                     <i class="bi bi-trash3"></i>
                 </a>
             </td>
