@@ -2,6 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:useBean type="java.util.ArrayList<com.example.webapphr1_2023.Beans.Location>" scope="request" id="locationList"/>
+<jsp:useBean type="java.lang.String" scope="request" id="notification"/>
+
 
 <!DOCTYPE html>
 <html>
@@ -19,6 +21,19 @@
             <li class="breadcrumb-item active">Locations</li>
         </ol>
     </nav>
+
+    <%if (request.getParameter("notify") != null){ %>
+
+    <% if (request.getParameter("notify").equals("success")) {%>
+    <div class="alert alert-success" role="alert"><%=notification%>
+    </div>
+    <%}%>
+    <% if (request.getParameter("notify").equals("error")) {%>
+    <div class="alert alert-danger" role="alert"><%=notification%>
+    </div>
+    <%}%>
+    <%}%>
+
     <a class="btn btn-primary mb-3" href="<%=request.getContextPath()%>/LocationServlet?action=formCrear">Crear
         Location</a>
     <table class="table">

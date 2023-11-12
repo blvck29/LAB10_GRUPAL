@@ -41,4 +41,53 @@ public class LocationDao extends DaoBase {
         }
         return list;
     }
+
+    public ArrayList<Country> listaCountries() {
+
+        ArrayList<Country> list = new ArrayList<>();
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM countries;")) {
+
+            while (rs.next()) {
+                Country country = new Country();
+
+                country.setCountryId(rs.getString(1));
+                country.setCountryName(rs.getString(2));
+                country.setRegionId(rs.getString(3));
+
+                list.add(country);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        }
+        return list;
+    }
+
+
+    public void crear(String locationId, String streetAddress, String postalCode, String city, String stateProvince, String countryId){
+
+        String sql = "INSERT INTO `hr`.`locations` (`location_id`, `street_address`, `postal_code`, `city`, `state_province`, `country_id`) VALUES (?, ?, ?, ?, ?, ?);";
+
+        try(Connection conn = getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+            pstmt.setString(1, locationId);
+            pstmt.setString(2, streetAddress);
+            pstmt.setString(3, postalCode);
+            pstmt.setString(4, city);
+            pstmt.setString(5, stateProvince);
+            pstmt.setString(6, countryId);
+
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
 }
