@@ -198,4 +198,25 @@ public class LocationDao extends DaoBase {
         }
     }
 
+
+    public ArrayList<Location> listaIds() {
+
+        ArrayList<Location> list = new ArrayList<>();
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM locations;")) {
+
+            while (rs.next()) {
+                Location location = new Location();
+                location.setLocationId(rs.getInt(1));
+                list.add(location);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        }
+        return list;
+    }
+
 }

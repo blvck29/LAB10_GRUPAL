@@ -76,7 +76,7 @@
                 </a>
             </td>
             <td>
-                <a class="btn btn-danger" onclick="alert('¿Estás seguro de querer eliminar este departamento?')" href="<%=request.getContextPath()%>/DepartmentServlet?action=delete&idDep=<%=dep.getDepartmentId()%>">
+                <a class="btn btn-danger" onclick="return confirm('¿Estás seguro de querer eliminar este departamento?')" href="<%=request.getContextPath()%>/DepartmentServlet?action=delete&idDep=<%=dep.getDepartmentId()%>">
                     <i class="bi bi-trash3"></i>
                 </a>
             </td>

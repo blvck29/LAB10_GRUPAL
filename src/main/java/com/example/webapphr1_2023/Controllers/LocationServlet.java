@@ -53,6 +53,8 @@ public class LocationServlet extends HttpServlet {
                 break;
 
             case "formCrear":
+                ArrayList<Location> listaIdsLoc = locationDao.listaIds();
+                req.setAttribute("listaIds", listaIdsLoc);
                 req.setAttribute("listaCountries",listaCountries);
                 req.getRequestDispatcher("location/form_crear.jsp").forward(req,resp);
                 break;
