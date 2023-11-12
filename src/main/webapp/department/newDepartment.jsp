@@ -36,7 +36,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<%= request.getContextPath()%>">Home</a></li>
-            <li class="breadcrumb-item active"><a href="<%= request.getContextPath()%>/DepartmentServlet">Trabajos</a></li>
+            <li class="breadcrumb-item "><a href="<%= request.getContextPath()%>/DepartmentServlet">Departments</a></li>
+            <li class="breadcrumb-item active">Crear Departamento</li>
         </ol>
     </nav>
 
