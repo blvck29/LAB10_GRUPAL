@@ -3,6 +3,7 @@
 
 <jsp:useBean type="java.util.ArrayList<com.example.webapphr1_2023.Beans.Location>" scope="request" id="locationList"/>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,26 @@
             <li class="breadcrumb-item active">Locations</li>
         </ol>
     </nav>
+
+    <% if (request.getParameter("notify") != null) { %>
+    <% String notification = (String) request.getAttribute("notification"); %>
+    <% String notifyType = request.getParameter("notify"); %>
+
+    <div id="notification" class="alert <%=(notifyType.equals("success")) ? "alert-success" : "alert-danger"%>" role="alert">
+        <%=notification%>
+    </div>
+
+    <script>
+        // Ocultar la notificación después de 10 segundos.
+        setTimeout(function () {
+            var notificationDiv = document.getElementById("notification");
+            if (notificationDiv) {
+                notificationDiv.style.display = 'none';
+            }
+        }, 10000);
+    </script>
+    <% } %>
+
     <a class="btn btn-primary mb-3" href="<%=request.getContextPath()%>/LocationServlet?action=formCrear">Crear
         Location</a>
     <table class="table">
@@ -38,25 +59,30 @@
         <tr>
             <td><%=loc.getLocationId()%>
             </td>
-            <td><%=loc.getLocationId()%>
+            <td><%=loc.getStreetAddress()%>
             </td>
-            <td><%=loc.getLocationId()%>
+            <td><%=loc.getPostalCode()%>
             </td>
-            <td><%=loc.getLocationId()%>
+            <td><%=loc.getCity()%>
             </td>
-            <td><%=loc.getLocationId()%>
+            <% if (loc.getStateProvince()==null) {%>
+            <td>------
             </td>
-            <td><%=loc.getLocationId()%>
+            <%} else {%>
+            <td><%=loc.getStateProvince()%>
+            </td>
+            <%}%>
+            <td><%=loc.getCountry().getCountryName()%>
             </td>
             <td>
                 <a class="btn btn-primary"
-                   href="<%=request.getContextPath()%>/DepartmentServlet?action=editar&id=<%=loc.getLocationId()%>">
+                   href="<%=request.getContextPath()%>/LocationServlet?action=formEditar&id=<%=loc.getLocationId()%>">
                     <i class="bi bi-pencil-square"></i>
                 </a>
             </td>
             <td>
-                <a class="btn btn-danger"
-                   href="<%=request.getContextPath()%>/DepartmentServlet?action=borrar&id=<%=loc.getLocationId()%>">
+                <a onclick="return confirm('¿Estas seguro de borrar?');" class="btn btn-danger"
+                   href="<%=request.getContextPath()%>/LocationServlet?action=borrar&id=<%=loc.getLocationId()%>">
                     <i class="bi bi-trash3"></i>
                 </a>
             </td>
