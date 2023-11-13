@@ -17,7 +17,6 @@ for(Location l : listaIds){
           '<%=id %>',
         <%}%>
     ];
-    console.log(idsNoDisponibles);
 </script>
 
 <html>

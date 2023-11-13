@@ -33,6 +33,7 @@ public class DepartmentServlet extends HttpServlet {
         switch (action){
             case "list":
                 req.setAttribute("departmentList", departmentDao.listarConNombres());
+                req.setAttribute("departmentsNoDelete", departmentDao.departmentsNoDelete());
                 req.getRequestDispatcher("department/list.jsp").forward(req, resp);
                 break;
 
@@ -61,7 +62,6 @@ public class DepartmentServlet extends HttpServlet {
 
                 System.out.println("A eliminar: " + idDepartment2);
                 departmentDao.deleteDepartment(idDepartment2);
-
                 resp.sendRedirect(req.getContextPath()+ "/DepartmentServlet");
                 break;
 

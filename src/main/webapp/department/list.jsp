@@ -1,12 +1,24 @@
 <%@ page import="com.example.webapphr1_2023.Beans.Department" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:useBean type="java.util.ArrayList<com.example.webapphr1_2023.Beans.Department>" scope="request" id="departmentList"/>
+<% ArrayList<String> idDepNoDelete = (ArrayList<String>) request.getAttribute("departmentsNoDelete"); %>
+
+<script>
+    var idsNoDelete= [
+        <%for(String id: idDepNoDelete){%>
+        '<%=id %>',
+        <%}%>
+    ];
+    console.log(idsNoDelete);
+</script>
 
 
 <!DOCTYPE html>
 <html>
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <jsp:include page="../includes/bootstrap_header.jsp"/>
     <title>Listar Departments</title>
 </head>
@@ -32,22 +44,25 @@
             <th></th>
         </tr>
         <%for (Department dep : departmentList) {
-                String street = dep.getStreetAddress();
-                String city = ", " + dep.getCity();
-                String province =  ", "+ dep.getProvince();
-                String country = ", " + dep.getCountry();
-                if(street.equals(", "+ null)){
-                    street ="";
-                }
-                if(city.equals(", "+ null)){
-                    city ="";
-                }
-                if(province.equals(", "+ null)){
-                    province ="";
-                }
-                if(country.equals(", "+ null)){
-                    country ="";
-                }%>
+            String deletekId = "borrar_" + dep.getDepartmentId();
+            String depIdInput = "depId_" + dep.getDepartmentId();
+            String street = dep.getStreetAddress();
+            String city = ", " + dep.getCity();
+            String province =  ", "+ dep.getProvince();
+            String country = ", " + dep.getCountry();
+            if(street.equals(", "+ null)){
+                street ="";
+            }
+            if(city.equals(", "+ null)){
+                city ="";
+            }
+            if(province.equals(", "+ null)){
+                province ="";
+            }
+            if(country.equals(", "+ null)){
+                country ="";
+            }%>
+        <input type="hidden" id="<%=depIdInput%>" class="form-control" name="depId" value="<%=dep.getDepartmentId()%>">
 
 
         <tr>
@@ -74,7 +89,7 @@
                 </a>
             </td>
             <td>
-                <a class="btn btn-danger" onclick="return confirm('¿Estás seguro de querer eliminar este departamento?')" href="<%=request.getContextPath()%>/DepartmentServlet?action=delete&idDep=<%=dep.getDepartmentId()%>">
+                <a class="btn btn-danger" id="<%=deletekId%>" onclick="return confirmacionEliminar(event)" href="<%=request.getContextPath()%>/DepartmentServlet?action=delete&idDep=<%=dep.getDepartmentId()%>">
                     <i class="bi bi-trash3"></i>
                 </a>
             </td>
@@ -84,6 +99,44 @@
         %>
     </table>
 </div>
+
+<script>
+    const depId = document.getElementById("depId");
+    function confirmacionEliminar(event) {
+        event.preventDefault();
+        var deleteLinkId = event.currentTarget.id;
+        var depIdInputId = deleteLinkId.replace("borrar_", "depId_");
+        var depId = document.getElementById(depIdInputId).value;
+
+        if(idsNoDelete.includes(depId)){
+            console.log(depId)
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR:',
+                iconColor: '#DC3545',
+                confirmButtonColor: '#DC3545',
+                confirmButtonText: "Regresar",
+                text: "Este departamento está asociado a algunos empleados, por lo tanto, no se puede eliminar."
+            });
+        }
+        else{
+            Swal.fire({
+                title: '¿Estas seguro de eliminar esta actividad?',
+                text: "No se podrán revertir estos cambios",
+                icon: 'warning',
+                iconColor: '#DC3545',
+                showCancelButton: true,
+                cancelButtonColor: '#0D6EFD',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#DC3545',
+                confirmButtonText: 'Borrar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = document.getElementById(deleteLinkId).getAttribute('href');
+                }});
+        }
+    }
+</script>
 <jsp:include page="../includes/bootstrap_footer.jsp"/>
 </body>
 </html>

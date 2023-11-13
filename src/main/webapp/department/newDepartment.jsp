@@ -6,12 +6,9 @@
     ArrayList<Employee> employeesList = (ArrayList<Employee>) request.getAttribute("employeesList");
     ArrayList<Department> locationsList = (ArrayList<Department>) request.getAttribute("locationsList");
     ArrayList<Department> idsDepartments = (ArrayList<Department>) request.getAttribute("idsDepartments");
-
     ArrayList<String> ids = new ArrayList<>();
-
     for (Department d : idsDepartments){
-        ids.add(d.getDepartmentId()+"");
-    }
+        ids.add(d.getDepartmentId()+"");}
 %>
 
 <script>
@@ -20,7 +17,6 @@
         '<%= id %>',
         <% }  %>
     ];
-    console.log(idsNoDisponibles);
 </script>
 
 <!DOCTYPE html>

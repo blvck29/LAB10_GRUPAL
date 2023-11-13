@@ -232,6 +232,28 @@ public class DepartmentDao extends DaoBase {
         return listaEmpleados;
     }
 
+    public ArrayList<String> departmentsNoDelete() {
+
+        ArrayList<String> list = new ArrayList<>();
+
+        String sql = "select distinct(department_id) FROM hr.employees WHERE department_id IS NOT NULL";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                String idDep = rs.getString(1);
+                list.add(idDep);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        }
+        return list;
+    }
+
 
 
 
