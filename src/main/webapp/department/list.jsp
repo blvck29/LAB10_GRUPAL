@@ -101,15 +101,13 @@
 </div>
 
 <script>
-    const depId = document.getElementById("depId");
     function confirmacionEliminar(event) {
         event.preventDefault();
-        var deleteLinkId = event.currentTarget.id;
-        var depIdInputId = deleteLinkId.replace("borrar_", "depId_");
-        var depId = document.getElementById(depIdInputId).value;
+        var idEventoBorrar = event.currentTarget.id;
+        var modeladoIdInput = idEventoBorrar.replace("borrar_", "depId_");
+        var valueDelInput = document.getElementById(modeladoIdInput).value;
 
-        if(idsNoDelete.includes(depId)){
-            console.log(depId)
+        if(idsNoDelete.includes(valueDelInput)){
             Swal.fire({
                 icon: 'error',
                 title: 'ERROR:',
