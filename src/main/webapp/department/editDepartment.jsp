@@ -35,12 +35,19 @@
         </div>
 
 
+
+
         <div class="mb-3">
             <label for="minSalary">Department Manager</label>
             <select class="form-select" name=managerId aria-label="Default select example">
 
-                <option value="UNSET" >--- No Asignar ---</option>
+                <%if(dep.getManagerName() == null){%>
+                <option value="UNSET" selected>--- No Asignar ---</option>
+
+                <%}else{%>
                 <option value="<%=dep.getManagerId()%>" selected><%=dep.getManagerName()%></option>
+                <option value="UNSET" >--- No Asignar ---</option>
+                <%}%>
 
                 <%for (Employee e : employeesList){ %>
 
