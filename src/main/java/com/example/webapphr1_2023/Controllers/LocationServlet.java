@@ -31,6 +31,7 @@ public class LocationServlet extends HttpServlet {
         switch (action){
             case "list":
                 ArrayList<Location> locationList = locationDao.lista();
+                req.setAttribute("locationsNoDelete", locationDao.locationsNoDelete());
                 req.setAttribute("locationList", locationList);
 
                 if (req.getParameter("notify") != null){

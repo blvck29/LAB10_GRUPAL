@@ -11,15 +11,14 @@
         '<%=id %>',
         <%}%>
     ];
-    console.log(idsNoDelete);
 </script>
 
 
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <jsp:include page="../includes/bootstrap_header.jsp"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Listar Departments</title>
 </head>
 <body>
@@ -44,7 +43,7 @@
             <th></th>
         </tr>
         <%for (Department dep : departmentList) {
-            String deletekId = "borrar_" + dep.getDepartmentId();
+            String deleteId = "borrar_" + dep.getDepartmentId();
             String depIdInput = "depId_" + dep.getDepartmentId();
             String street = dep.getStreetAddress();
             String city = ", " + dep.getCity();
@@ -89,7 +88,7 @@
                 </a>
             </td>
             <td>
-                <a class="btn btn-danger" id="<%=deletekId%>" onclick="return confirmacionEliminar(event)" href="<%=request.getContextPath()%>/DepartmentServlet?action=delete&idDep=<%=dep.getDepartmentId()%>">
+                <a class="btn btn-danger" id="<%=deleteId%>" onclick="return confirmacionEliminar(event)" href="<%=request.getContextPath()%>/DepartmentServlet?action=delete&idDep=<%=dep.getDepartmentId()%>">
                     <i class="bi bi-trash3"></i>
                 </a>
             </td>
@@ -120,7 +119,7 @@
         else{
             Swal.fire({
                 title: '¿Estas seguro de eliminar este departamento?',
-                text: "No se podrán revertir estos cambios",
+                text: "No se podrán revertir los cambios",
                 icon: 'warning',
                 iconColor: '#DC3545',
                 showCancelButton: true,
@@ -130,7 +129,7 @@
                 confirmButtonText: 'Borrar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = document.getElementById(deleteLinkId).getAttribute('href');
+                    window.location.href = document.getElementById(idEventoBorrar).getAttribute('href');
                 }});
         }
     }

@@ -219,4 +219,26 @@ public class LocationDao extends DaoBase {
         return list;
     }
 
+    public ArrayList<String> locationsNoDelete() {
+
+        ArrayList<String> list = new ArrayList<>();
+
+        String sql = "select distinct(location_id) FROM hr.departments WHERE location_id IS NOT NULL";
+
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                String idLoc = rs.getString(1);
+                list.add(idLoc);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        }
+        return list;
+    }
+
 }

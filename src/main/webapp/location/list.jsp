@@ -1,13 +1,24 @@
 <%@ page import="com.example.webapphr1_2023.Beans.Location" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <jsp:useBean type="java.util.ArrayList<com.example.webapphr1_2023.Beans.Location>" scope="request" id="locationList"/>
+<%ArrayList<String> idLocNoDelete = (ArrayList<String>) request.getAttribute("locationsNoDelete");%>
+<script>
+    var idsNoDelete= [
+        <%for(String id: idLocNoDelete){%>
+        '<%=id %>',
+        <%}%>
+    ];
+    console.log(idsNoDelete);
+</script>
 
 
 <!DOCTYPE html>
 <html>
 <head>
     <jsp:include page="../includes/bootstrap_header.jsp"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Listar Locations</title>
 </head>
 <body>
@@ -55,7 +66,10 @@
         </tr>
         <%
             for (Location loc : locationList) {
+                String deleteId = "borrar_" + loc.getLocationId();
+                String locIdInput = "locId_" + loc.getLocationId();
         %>
+        <input type="hidden" id="<%=locIdInput%>" class="form-control" name="depId" value="<%=loc.getLocationId()%>">
         <tr>
             <td><%=loc.getLocationId()%>
             </td>
@@ -81,8 +95,7 @@
                 </a>
             </td>
             <td>
-                <a onclick="return confirm('¿Estas seguro de borrar?');" class="btn btn-danger"
-                   href="<%=request.getContextPath()%>/LocationServlet?action=borrar&id=<%=loc.getLocationId()%>">
+                <a class="btn btn-danger" id="<%=deleteId%>" onclick="return confirmacionEliminar(event)" href="<%=request.getContextPath()%>/LocationServlet?action=borrar&id=<%=loc.getLocationId()%>">
                     <i class="bi bi-trash3"></i>
                 </a>
             </td>
@@ -92,6 +105,44 @@
         %>
     </table>
 </div>
+
+
+<script>
+    function confirmacionEliminar(event) {
+        event.preventDefault();
+        var idEventoBorrar = event.currentTarget.id;
+        var modeladoIdInput = idEventoBorrar.replace("borrar_", "locId_");
+        var valueDelInput = document.getElementById(modeladoIdInput).value;
+        console.log(valueDelInput)
+
+        if(idsNoDelete.includes(valueDelInput)){
+            Swal.fire({
+                icon: 'error',
+                title: 'ERROR:',
+                iconColor: '#DC3545',
+                confirmButtonColor: '#DC3545',
+                confirmButtonText: "Regresar",
+                text: "Este ubicación está asociada a algunos departamentos, por lo tanto, no se puede eliminar."
+            });
+        }
+        else{
+            Swal.fire({
+                title: '¿Estas seguro de eliminar esta ubicación?',
+                text: "No se podrán revertir los cambios",
+                icon: 'warning',
+                iconColor: '#DC3545',
+                showCancelButton: true,
+                cancelButtonColor: '#0D6EFD',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#DC3545',
+                confirmButtonText: 'Borrar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = document.getElementById(idEventoBorrar).getAttribute('href');
+                }});
+        }
+    }
+</script>
 <jsp:include page="../includes/bootstrap_footer.jsp"/>
 </body>
 </html>
