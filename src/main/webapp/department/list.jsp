@@ -119,7 +119,7 @@
         }
         else{
             Swal.fire({
-                title: '¿Estas seguro de eliminar esta actividad?',
+                title: '¿Estas seguro de eliminar este departamento?',
                 text: "No se podrán revertir estos cambios",
                 icon: 'warning',
                 iconColor: '#DC3545',
